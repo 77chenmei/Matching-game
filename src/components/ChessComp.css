@@ -1,0 +1,21 @@
+.chessComp{
+    width: 40px;
+    height: 40px;
+    border:2px solid lightgray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chessbox{
+    width:30px;
+    height:30px;
+    border-radius: 50%;
+}
+.chessblack{
+    background: radial-gradient(#fff,#000); 
+}
+
+.chessred{
+    background: radial-gradient(#fff,red); 
+}
