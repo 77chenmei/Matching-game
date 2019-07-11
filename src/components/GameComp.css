@@ -18,9 +18,14 @@ form p {
     margin:0 10px;
 }
 
-.colorRed{
-    color:red;
+.tipTitle{
     font-size: 28px;
     font-weight: 700;
     text-align: center;
+}
+.colorRed{
+    color:red;
+}
+.colorBlack{
+    color:black;
 }
