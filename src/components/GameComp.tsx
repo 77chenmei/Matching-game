@@ -67,23 +67,30 @@ export class GameComp extends React.Component <{},IState> {
 
     /**
      * 判断结果
-     * 1. 横向 是否成线
-     * 2. 纵向 是否成线
-     * 3. 斜线 是否成线 （斜线不需要考虑边缘线）
+     * 1. 判断是否成功 （判断成功是谁？）
+     * 2. 判断是否平局 
+     * 3. 比赛进行中 。。。
      */
     handleStatus(chesses:ChessType[],index:number) :GameStatus{
         const subsetNum = Math.sqrt(chesses.length)
-       
+    
         if(
             this.handleTransverseChess(chesses,index,subsetNum)  // 横向
         ||  this.handleLongitudinal(chesses,index,subsetNum)
+        ||  this.handleSlash(chesses,index,subsetNum)
             ){
             return this.state.nextChess === ChessType.red ? GameStatus.redWin : GameStatus.blackWin
+        }else{
+            return chesses.includes(ChessType.none) ?  GameStatus.gaming : GameStatus.equal
         }
-
-        return GameStatus.gaming
     }
 
+    /**
+     * 判断横向成线
+     * @param chesses 
+     * @param index 
+     * @param subsetNum 
+     */
     handleTransverseChess(chesses:ChessType[],index:number,subsetNum:number){
         const minIndex = Math.floor(index / subsetNum) * subsetNum
         const minChess = chesses[minIndex]
@@ -96,6 +103,12 @@ export class GameComp extends React.Component <{},IState> {
         return true
     }
 
+    /**
+     * 判断纵向成线
+     * @param chesses 
+     * @param index 
+     * @param subsetNum 
+     */
     handleLongitudinal(chesses:ChessType[],index:number,subsetNum:number){
         const minIndex = Math.floor(index % subsetNum)
         const minChess = chesses[minIndex]
@@ -109,6 +122,44 @@ export class GameComp extends React.Component <{},IState> {
         return true
     }
 
+    /**
+     * 判断斜线成线
+     * @param chesses 
+     * @param index 
+     * @param subsetNum 
+     */
+    handleSlash(chesses:ChessType[],index:number,subsetNum:number){
+        //判断是否是棋盘中心点
+        const remainder = Math.floor(subsetNum / 2)
+        let centerIndex = (subsetNum + 1) * remainder
+
+        if(centerIndex === index){  // 棋盘正中心
+            return this.handleMatching(chesses,subsetNum,0) || this.handleMatching(chesses,subsetNum,subsetNum-1)
+        }
+        else if (index % (subsetNum + 1) === 0){  // 以0开头的斜线
+           return this.handleMatching(chesses,subsetNum,0)
+        }
+        else if (index % (subsetNum -1) === 0){   // 以(n-1)开头的斜线
+            return this.handleMatching(chesses,subsetNum,subsetNum-1)
+        }
+    }
+
+    handleMatching(chesses:ChessType[],subsetNum:number,startIndex:number){
+        let startChess = chesses[startIndex]
+        for(let i = 1;i<subsetNum;i++){
+            let chessIndex = startIndex === 0 ? (i * (subsetNum + 1) ) : ( (i+1) * (subsetNum-1))
+            if(startChess !== chesses[chessIndex]){
+                return false
+            }
+        }
+
+        return true
+    }
+
+    /**
+     * click 选择 等级
+     * @param degree 难度
+     */
     changeDegree(degree:Degree){
         if(this.state.gameStatus !==  GameStatus.gaming || window.confirm('比赛进行中，确定切换？')){
             this.setState({
