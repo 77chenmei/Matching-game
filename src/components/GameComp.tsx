@@ -13,6 +13,20 @@ interface IState {
     degree:Degree
 }
 
+// 等级分类
+const degreeTypes = [
+    {
+        type:Degree.lighter,
+        title:'简单'
+    },{
+        type:Degree.middle,
+        title:'中等'
+    },{
+        type:Degree.higher,
+        title:'困难'
+    }
+]
+
 export class GameComp extends React.Component <{},IState> {
 
     state:IState = {
@@ -175,38 +189,20 @@ export class GameComp extends React.Component <{},IState> {
             <div className="panel">
                 <form>
                     <label>等级：</label>
-                    <p>
-                        <input type="radio"  
-                            checked={ this.state.degree === Degree.lighter} 
-                            onChange={
-                                ()=>{
-                                    this.changeDegree(Degree.lighter) 
-                                }
-                            }/> 
-                        <span>简单</span>
-                    </p>
-                    
-                    <p>
-                        <input type="radio" 
-                            checked={ this.state.degree === Degree.middle}
-                            onChange={
-                            ()=>{
-                               this.changeDegree(Degree.middle) 
-                            }
-                        }/> 
-                        <span>中等</span>
-                    </p>
-
-                    <p>
-                        <input type="radio" 
-                            checked={ this.state.degree === Degree.higher}
-                            onChange={
-                                ()=>{
-                                this.changeDegree(Degree.higher) 
-                                }
-                            }/> 
-                        <span>困难</span>
-                    </p>
+                    {
+                        degreeTypes.map((item,index)=>(
+                            <p key={index}>
+                                <input type="radio"  
+                                    checked={ this.state.degree === item.type} 
+                                    onChange={
+                                        ()=>{
+                                            this.changeDegree(item.type) 
+                                        }
+                                    }/> 
+                                <span>{item.title}</span>
+                            </p>
+                        ))
+                    }
                 </form>
                 
                 {
