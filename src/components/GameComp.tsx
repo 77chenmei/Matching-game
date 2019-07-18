@@ -4,6 +4,7 @@ import { ChessPanel } from './ChessPanel';
 import { Degree ,ChessType, GameStatus} from '../types/enum';
 
 import './GameComp.css'
+import styled from 'styled-components';
 
 // 状态 
 interface IState {
@@ -183,10 +184,31 @@ export class GameComp extends React.Component <{},IState> {
             this.init(degree)
         }
     }
-
+    
     render(){
+        interface linkProps {
+            className:string,
+            children:any
+        }
+        const Link = ({ className, children }:linkProps) => (
+            <a className={className}>
+              {children}
+            </a>
+          );
+          
+          const StyledLink = styled(Link)`
+            color: palevioletred;
+            font-weight: bold;
+          `;
+          
+
         return  (
             <div className="panel">
+                <Link className="tipTitle">Unstyled, boring Link</Link>
+                <br />
+                <StyledLink className="tipTitle">Styled, exciting Link</StyledLink>
+
+
                 <form>
                     <label>等级：</label>
                     {

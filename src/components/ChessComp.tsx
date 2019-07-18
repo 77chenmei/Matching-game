@@ -3,9 +3,6 @@ import styled from 'styled-components';
 
 import { ChessType } from '../types/enum';
 
-
-
-
 const Chessclass = styled.div`
     width: 40px;
     height: 40px;

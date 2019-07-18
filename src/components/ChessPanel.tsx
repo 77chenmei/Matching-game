@@ -1,5 +1,5 @@
 import React from 'react';
-import './ChessPanel.css';
+import styled from 'styled-components';
 
 import {ChessComp} from './ChessComp'
 import { ChessType } from '../types/enum';
@@ -10,15 +10,23 @@ interface Iprops {
   onClick?:(index:number)=>void
 }
 
+interface ILength {
+  length:number
+}
+
+const ChessClass = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width:${(props:ILength)=> (46 * Math.sqrt(props.length) + 'px')}
+`
 
 export const ChessPanel:React.FC<Iprops> = function ({degree,isGameOver,onClick}){
   const isOver = isGameOver as boolean ; //类型断言
   // const isGameOver = props.isGameOver! ; //非空断言：在数据上加上！，表示不要考虑该数据为空的情况
 
-  const width = 46 * Math.sqrt(degree.length)
-
   return (
-     <div className="chessPanel" style={{width:`${width}px`}}>
+     <ChessClass length={degree.length}>
       {
         degree.map((item,idx) => <ChessComp 
           type={item}  
@@ -29,7 +37,7 @@ export const ChessPanel:React.FC<Iprops> = function ({degree,isGameOver,onClick}
             }
           }}/> )
       }
-    </div>
+    </ChessClass>
   )
 } 
 
